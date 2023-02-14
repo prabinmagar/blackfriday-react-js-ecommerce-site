@@ -1,17 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-
+import { BasketProvider } from './context/basketContext';
+import { FilterProvider } from './context/filterContext';
+import { ProductProvider } from './context/productContext';
+import { CategoryProvider } from './context/categoryContext';
+import { AuthProvider } from './context/authContext';
+import { SearchProvider } from './context/searchContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const compose = (providers) => providers.reduce((Prev, Curr) => ({ children }) => (
+  <Prev>
+    <Curr>{children}</Curr>
+  </Prev>
+));
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const Provider = compose([AuthProvider, ProductProvider, BasketProvider, FilterProvider, CategoryProvider, SearchProvider])
+root.render(
+  <Provider>
+    <App />
+  </Provider>
+);
